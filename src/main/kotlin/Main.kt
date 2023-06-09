@@ -1,6 +1,6 @@
-public var unicId = 1
 
-class comments(
+
+class Comments(
     val count: Int,
     val canPost: Boolean,
     val groupsCanPost: Boolean,
@@ -8,7 +8,7 @@ class comments(
     val canOpen: Boolean
 )
 
-class likes(
+class Likes(
     val count: Int,
     val userLikes: Boolean,
     val canLikes: Boolean,
@@ -16,36 +16,32 @@ class likes(
 )
 
 data class Post(
-    val id: Int = unicId,
+    val id: Int,
     val onwerId: Int,
     val fromId: Int,
     val createdBy: Int,
     val date: Int,
-    val comments: comments,
-    val likes: likes,
+    val comments: Comments,
+    val likes: Likes,
 
 )
 
 object WallService {
+    public var unicId = 1
     private var posts = emptyArray<Post>()
     fun add(post: Post): Post {
-        posts += post
-        unicId++
+        posts += post.copy(id = unicId++)
         return posts.last()
     }
 
     fun update(post: Post): Boolean {
-        var count = 0
         for (i in 0..posts.size-1) {
             if (post.id.equals(posts[i].id)) {
                 posts[i] = post
-                count++
+                return true
             }
         }
-        if (count === 1)
-            return true
-        else
-            return false
+        return false
     }
     fun print(){
         for (post in posts){
@@ -63,7 +59,7 @@ object WallService {
 
 fun main(args: Array<String>) {
     var service = WallService
-    service.add(Post(unicId, 12, 12, 12, 12, comments(12, true, true, true, true), likes(1, true, true,true)))
-    service.add(Post(unicId, 12, 12, 12, 12, comments(12, true, true, true, true), likes(1, true, true,true)))
+    service.add(Post(0, 12, 12, 12, 12, Comments(12, true, true, true, true), Likes(1, true, true,true)))
+    service.add(Post(0, 12, 12, 12, 12, Comments(12, true, true, true, true), Likes(1, true, true,true)))
     service.print()
 }
