@@ -60,6 +60,11 @@ class Video(
     val id: Int,
     val title: String
 )
+data class Comment(
+    val id: Int,
+    val text: String
+)
+class PostNotFoundExeption(message: String) : RuntimeException(message)
 data class Post(
     val id: Int,
     val onwerId: Int,
@@ -92,9 +97,22 @@ data class Post(
 object WallService {
     public var unicId = 1
     private var posts = emptyArray<Post>()
+    private var comments = emptyArray<Comment>()
     fun add(post: Post): Post {
         posts += post.copy(id = unicId++)
         return posts.last()
+    }
+    fun createComment (postId: Int, comment: Comment): Comment{
+        for (i in 0..posts.size-1) {
+            if (postId.equals(posts[i].id)) {
+                comments += comment
+                return comments.last()
+            }
+
+
+        }
+        throw PostNotFoundExeption("Not post whit $postId")
+        return comments.last()
     }
 
     fun update(post: Post): Boolean {
@@ -109,6 +127,13 @@ object WallService {
     fun print(){
         for (post in posts){
             print(post)
+            print(' ')
+        }
+        println()
+    }
+    fun printComment(){
+        for (comment in comments){
+            print(comment)
             print(' ')
         }
         println()
