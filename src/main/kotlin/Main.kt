@@ -162,7 +162,7 @@ class Note(
     val text: String
 )
 
-class NoteComment(
+data class NoteComment(
     val idNote: Int,
     var idComment: Int,
     val message: String
@@ -180,6 +180,7 @@ object CreateNotes {
     public var unicIdComment = 1
     val notes = mutableListOf<Notes>()
     val comments = mutableListOf<NoteComment>()
+    val deleteComments = mutableListOf<NoteComment>()
     fun addNote(note: Notes): Notes {
         notes += note.copy(id = unicId++)
         return notes.last()
@@ -190,9 +191,7 @@ object CreateNotes {
     fun createComment(comment: NoteComment): NoteComment {
         for (i in 0..notes.size - 1) {
             if (comment.idNote.equals(notes[i].id)) {
-                comment.idComment = unicIdComment
-                comments += comment
-                unicIdComment++
+                comments += comment.copy(idComment = unicIdComment++)
                 return comments.last()
             }
 
@@ -205,7 +204,7 @@ object CreateNotes {
     fun delete(noteId: Int): Boolean {
         for (i in 0..notes.size - 1) {
             if (noteId.equals(notes[i].id)) {
-                notes.removeAt(noteId - 1)
+                notes.removeAt(i)
                 return true
             }
         }
@@ -214,8 +213,9 @@ object CreateNotes {
 
     fun deleteComment(noteId: Int, commentId: Int): Boolean {
         for (i in 0..comments.size - 1) {
-            if (noteId.equals(comments[i].idNote) || commentId.equals((comments[i].idComment))) {
-                comments.removeAt(commentId - 1)
+            if (noteId.equals(comments[i].idNote) && commentId.equals((comments[i].idComment))) {
+                deleteComments += comments[i]
+                comments.removeAt(i)
                 return true
             }
         }
@@ -234,7 +234,7 @@ object CreateNotes {
 
     fun updateComments(comment: NoteComment): Boolean {
         for (i in 0..comments.size - 1) {
-            if (comment.idNote.equals(comments[i].idNote) || comment.idComment.equals(comments[i].idComment)) {
+            if (comment.idNote.equals(comments[i].idNote) && comment.idComment.equals(comments[i].idComment)) {
                 comments[i] = comment
                 return true
             }
@@ -242,30 +242,38 @@ object CreateNotes {
         return false
     }
 
-    fun get() {
-        for (i in 0..notes.size - 1) {
-            println(notes[i])
-
-        }
+    fun get(): MutableList<Notes> {
+        return notes
     }
 
-    fun getById(noteId: Int) {
-        println(notes[noteId+1])
+    fun getById(noteId: Int): Notes {
+
+        return notes[noteId - 1]
 
     }
 
-    fun getComments(noteId: Int) {
+    fun getComments(noteId: Int): MutableList<NoteComment> {
+        var listComment = mutableListOf<NoteComment>()
         for (i in 0..comments.size - 1) {
             if (noteId.equals(comments[i].idNote)) {
-                println(comments[i])
+                listComment += comments[i]
             }
 
         }
+        return listComment
     }
 
-
+    fun restoreComment(noteId: Int, commentId: Int): Boolean {
+        for (i in 0..deleteComments.size - 1) {
+            if (noteId.equals(deleteComments[i].idNote) || commentId.equals((deleteComments[i].idComment))) {
+                comments += comments[i]
+                deleteComments.removeAt(i)
+                return true
+            }
+        }
+        return false
+    }
 }
-
 
 fun main(args: Array<String>) {
     var userNotes = CreateNotes
