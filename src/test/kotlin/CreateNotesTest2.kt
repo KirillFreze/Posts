@@ -12,4 +12,13 @@ class CreateNotesTest2 {
         println(result)
         assertEquals("Hello", result)
     }
+    @Test(expected = PostNotFoundExeption::class)
+    fun shouldThrow() {
+        val createNotes = CreateNotes
+        createNotes.addNote(Notes(1, Note("Hello", "World")))
+        val result = CreateNotes.createComment(NoteComment(2,1,"Hello")).message
+        println(result)
+        assertEquals("Hello", result)
+
+    }
 }

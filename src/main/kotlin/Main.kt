@@ -197,7 +197,7 @@ object CreateNotes {
 
 
         }
-
+        throw PostNotFoundExeption("Not note")
         return comments.last()
     }
 
@@ -208,6 +208,7 @@ object CreateNotes {
                 return true
             }
         }
+        throw PostNotFoundExeption("Not note")
         return false
     }
 
@@ -219,6 +220,7 @@ object CreateNotes {
                 return true
             }
         }
+        throw PostNotFoundExeption("Not comment")
         return false
     }
 
@@ -229,6 +231,7 @@ object CreateNotes {
                 return true
             }
         }
+        throw PostNotFoundExeption("Not note")
         return false
     }
 
@@ -239,6 +242,7 @@ object CreateNotes {
                 return true
             }
         }
+        throw PostNotFoundExeption("Not comment")
         return false
     }
 
@@ -271,6 +275,7 @@ object CreateNotes {
                 return true
             }
         }
+        throw PostNotFoundExeption("Not comment")
         return false
     }
 }
