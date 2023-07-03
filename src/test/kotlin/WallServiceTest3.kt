@@ -3,7 +3,7 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
 
-class WallServiceTest3 {
+//class WallServiceTest3 {
 //    @Before
 //    fun clearBeforeTest(){
 //        WallService.clear()
@@ -29,4 +29,4 @@ class WallServiceTest3 {
 //
 //    }
 
-}
+//}
