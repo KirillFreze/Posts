@@ -178,9 +178,9 @@ data class Notes(
 object CreateNotes {
     public var unicId = 1
     public var unicIdComment = 1
-    val notes = mutableListOf<Notes>()
-    val comments = mutableListOf<NoteComment>()
-    val deleteComments = mutableListOf<NoteComment>()
+    var notes = mutableListOf<Notes>()
+    var comments = mutableListOf<NoteComment>()
+    var deleteComments = mutableListOf<NoteComment>()
     fun addNote(note: Notes): Notes {
         notes += note.copy(id = unicId++)
         return notes.last()
